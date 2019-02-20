@@ -42,6 +42,35 @@ def confirmRSID(rsid):
 def getDeriv(mutation):
     if len(mutation) == 4:
         return mutation[3]
+
+def getAliases(snp):
+    f = open('SNPIndex.csv', 'r')
+    reader = csv.reader(f)
+    #Search and return rsid             Add binary search option for sorted rsid csvs
+    for row in reader:
+        if row[0] == snp:
+            f.close()
+            return row[2].split("; ")
+    f.close()
+    return None
+
+def getRsidsFromBranch(branchName):
+    f = open('SNPIndex.csv', 'r')
+    reader = csv.reader(f)
+    #Search and return rsid             Add binary search option for sorted rsid csvs
+    rsids = []
+    alreadyChecked = []
+    
+    for row in reader:
+        if row[1] == branchName and row[3] not in alreadyChecked:
+            rsids.append((row[3],row[6]))
+            alreadyChecked.append(row[3])
+    f.close()
+    return rsids
+
+
 #print(genotypeAtCluster("rs774860428"))
 #print(confirmGenotype( "T", "rs774860428"))
+print(getRsidsFromBranch("R"))
+print(getAliases("BT"))
 print(confirmSNP("L146"))
